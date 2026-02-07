@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Site vulnérable – Hack éthique</title>
+</head>
+<body>
+
+<h1>🧪 Site de test – Hack éthique</h1>
+
+<hr>
+
+<h2>🔓 Recherche vulnérable (XSS)</h2>
+
+<form method="GET">
+  <input type="text" name="q" placeholder="Recherche">
+  <button>Rechercher</button>
+</form>
+
+<p>Résultat :</p>
+
+<div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    document.write(params.get("q"));
+  </script>
+</div>
+
+<hr>
+
+<h2>🔑 Faux login (faible)</h2>
+
+<form onsubmit="login(); return false;">
+  <input id="user" placeholder="Utilisateur">
+  <input id="pass" placeholder="Mot de passe">
+  <button>Connexion</button>
+</form>
+
+<p id="result"></p>
+
+<script>
+function login() {
+  const user = document.getElementById("user").value;
+  const pass = document.getElementById("pass").value;
+
+  if (user == "admin" && pass == "admin") {
+    document.getElementById("result").innerHTML =
+      "Bienvenue ADMIN 🔥";
+  } else {
+    document.getElementById("result").innerHTML =
+      "Connexion refusée ❌";
+  }
+}
+</script>
+
+</body>
+</html>
