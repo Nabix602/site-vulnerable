@@ -2,73 +2,68 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Front-End Hacking Lab</title>
+  <title>Le site de Maxime</title>
   <style>
-    body { font-family: Arial; background:#111; color:#0f0; padding:20px; }
-    input, button { padding:8px; margin:5px 0; }
-    .box { border:1px solid #0f0; padding:15px; margin-bottom:20px; }
+    body { font-family: Arial; background:#f5f5f5; padding:20px; }
+    header { background:#333; color:white; padding:15px; }
+    section { background:white; padding:15px; margin-top:15px; }
+    input, textarea, button { width:100%; margin-top:8px; padding:8px; }
   </style>
 </head>
 <body>
 
-<h1>☠️ Front‑End Hacking Lab</h1>
-<p>Tout est vulnérable. À toi de jouer.</p>
+<header>
+  <h1>Bienvenue sur mon site</h1>
+  <p>Blog personnel & contact</p>
+</header>
 
-<div class="box">
-  <h2>1️⃣ XSS – Commentaire</h2>
-  <input id="comment" placeholder="Écris un commentaire">
-  <button onclick="post()">Poster</button>
+<section>
+  <h2>À propos</h2>
+  <p>Je partage ici mes projets et mes idées.</p>
+</section>
+
+<section>
+  <h2>Commentaires</h2>
+  <textarea id="comment" placeholder="Laisse un commentaire"></textarea>
+  <button onclick="addComment()">Envoyer</button>
   <div id="comments"></div>
-</div>
+</section>
 
-<div class="box">
-  <h2>2️⃣ Login cassable</h2>
-  <input id="user" placeholder="Username">
-  <input id="pass" placeholder="Password">
-  <button onclick="login()">Login</button>
-  <p id="loginResult"></p>
-</div>
+<section>
+  <h2>Connexion membre</h2>
+  <input id="user" placeholder="Nom d'utilisateur">
+  <input id="pass" placeholder="Mot de passe">
+  <button onclick="login()">Connexion</button>
+  <p id="loginMsg"></p>
+</section>
 
-<div class="box">
-  <h2>3️⃣ Page admin cachée</h2>
-  <p>Indice : regarde le code source 😉</p>
-</div>
-
-<div class="box">
-  <h2>4️⃣ Accès protégé bidon</h2>
-  <button onclick="secret()">Accéder au contenu secret</button>
-  <p id="secret"></p>
-</div>
+<section id="admin" style="display:none;">
+  <h2>Espace admin</h2>
+  <p>Gestion du site</p>
+</section>
 
 <script>
-function post() {
-  const c = document.getElementById("comment").value;
+function addComment() {
+  let c = document.getElementById("comment").value;
   document.getElementById("comments").innerHTML += "<p>" + c + "</p>";
 }
 
 function login() {
-  if (user.value === "admin" && pass.value === "1234") {
-    loginResult.innerHTML = "Connecté en ADMIN";
-    localStorage.setItem("auth","true");
+  if (user.value == "admin" && pass.value == "admin") {
+    loginMsg.innerHTML = "Connexion réussie";
+    localStorage.setItem("role","admin");
+    document.getElementById("admin").style.display = "block";
   } else {
-    loginResult.innerHTML = "Erreur";
+    loginMsg.innerHTML = "Erreur de connexion";
   }
 }
 
-function secret() {
-  if (localStorage.getItem("auth") === "true") {
-    secret.innerHTML = "FLAG{frontend_hacked}";
-  } else {
-    secret.innerHTML = "Accès refusé";
-  }
-}
-
-// Page admin cachée
-if (window.location.hash === "#admin") {
-  document.body.innerHTML = "<h1>ADMIN PANEL</h1><p>FLAG{admin_access}</p>";
+if (localStorage.getItem("role") == "admin") {
+  document.getElementById("admin").style.display = "block";
 }
 </script>
 
 </body>
 </html>
+
 
